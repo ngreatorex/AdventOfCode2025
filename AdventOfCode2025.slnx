@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+  </Folder>
+  <Project Path="Day01/Day01.csproj" />
+  <Project Path="Day02/Day02.csproj" />
+  <Project Path="Shared/Shared.csproj" />
+</Solution>

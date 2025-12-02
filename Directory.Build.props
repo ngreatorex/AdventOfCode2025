@@ -1,0 +1,9 @@
+<Project>
+   <PropertyGroup>
+     <AssemblyName>AdventOfCode2025.$(MSBuildProjectName)</AssemblyName>
+     <RootNamespace>AdventOfCode2025.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+     <TargetFramework>net10.0</TargetFramework>
+     <ImplicitUsings>enable</ImplicitUsings>
+     <Nullable>enable</Nullable>
+   </PropertyGroup>
+</Project>
