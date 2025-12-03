@@ -5,5 +5,6 @@
   </Folder>
   <Project Path="Day01/Day01.csproj" />
   <Project Path="Day02/Day02.csproj" />
+  <Project Path="Day03/Day03.csproj" Id="7f98620c-8969-4341-83f6-7ec965d556fc" />
   <Project Path="Shared/Shared.csproj" />
 </Solution>

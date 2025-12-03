@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode2025.Shared;
+﻿using Serilog;
+
+namespace AdventOfCode2025.Shared;
 
 public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction> where TInstruction : IParsable<TInstruction>, new()
     where TSelf : Puzzle<TSelf, TInstruction>, new()
@@ -24,6 +26,7 @@ public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
         using var streamReader = new StreamReader(fileName);
         var result = new TSelf();
 
+        Log.Debug("Reading {FileName}", fileName);
         var inputString = await streamReader.ReadToEndAsync();
 
         result.Instructions.AddRange(

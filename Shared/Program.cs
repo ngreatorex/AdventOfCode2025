@@ -1,4 +1,6 @@
 ﻿using Serilog;
+using Serilog.Context;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace AdventOfCode2025.Shared;
 
@@ -20,16 +22,18 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
     protected virtual void ConfigureLogger()
     {
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .MinimumLevel.Information()
+            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{InputFile}] {Message:lj}{NewLine}{Exception}",
+                theme: AnsiConsoleTheme.Literate)
+            .MinimumLevel.Debug()
             .Enrich.FromLogContext()
             .CreateLogger();
     }
 
-    protected virtual IEnumerable<string> InputFiles => Directory.EnumerateFiles("inputs", "*.txt");
+    protected virtual IEnumerable<string> InputFiles => Directory.EnumerateFiles("inputs", "*.txt").Reverse();
 
     protected async Task RunFile(string filename)
     {
+        using var l = LogContext.PushProperty("InputFile", Path.GetFileName(filename));
         var puzzleInput = await TPuzzle.LoadAsync<TPuzzle>(filename);
 
         Log.Information("Processing file {FileName}", filename);
@@ -40,5 +44,6 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
     public static async Task Main(string[] args)
     {
         await new TSelf().Run();
+        await Log.CloseAndFlushAsync();
     }
 }
