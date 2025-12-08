@@ -7,8 +7,10 @@ namespace AdventOfCode2025.Shared;
 public abstract class Program<TSelf, TPuzzle, TInstruction>
     where TSelf : Program<TSelf, TPuzzle, TInstruction>, new()
     where TPuzzle : Puzzle<TPuzzle, TInstruction>, IPuzzle<TPuzzle, TInstruction>, new()
-    where TInstruction : IParsable<TInstruction>, new()
+    where TInstruction : IParsable<TInstruction>
 {
+    protected virtual bool PartTwoRequiresRerun { get; } = false;
+
     protected virtual async Task Run()
     {
         ConfigureLogger();
@@ -34,11 +36,22 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
     protected async Task RunFile(string filename)
     {
         using var l = LogContext.PushProperty("InputFile", Path.GetFileName(filename));
-        var puzzleInput = await TPuzzle.LoadAsync<TPuzzle>(filename);
+        var puzzleInput = await TPuzzle.LoadAsync<TPuzzle>(filename, false);
 
+        puzzleInput.LogState(true);
         Log.Information("Processing file {FileName}", filename);
         puzzleInput.Run();
-        puzzleInput.PrintResult();
+        puzzleInput.LogState(false);
+
+        if (PartTwoRequiresRerun)
+        {
+            var partTwoInput = await TPuzzle.LoadAsync<TPuzzle>(filename, true);
+
+            partTwoInput.LogState(true);
+            Log.Information("Processing file {FileName} for part two", filename);
+            partTwoInput.Run();
+            partTwoInput.LogState(false);
+        }
     }
 
     public static async Task Main(string[] args)

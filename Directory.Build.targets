@@ -1,4 +1,7 @@
 <Project>
+  <ItemGroup Condition="$(MSBuildProjectName)!='Shared'">
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <None Update="inputs/*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -9,7 +9,7 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
     private HashSet<long> RuleOneInvalidIDs = [];
     private HashSet<long> RuleTwoInvalidIDs = [];
 
-    public override void PrintResult()
+    public override void LogState(bool isInitial)
     {
         Log.Information("Invalid IDs by rule 1: {IDs}", RuleOneInvalidIDs);
         Log.Information("Invalid IDs by rule 2: {IDs}", RuleTwoInvalidIDs);
@@ -57,5 +57,5 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
         }
     }
 
-    protected override IEnumerable<string> Split(string input) => input.Split(',');
+    protected override IEnumerable<string> Split(string input, bool _) => input.Split(',');
 }

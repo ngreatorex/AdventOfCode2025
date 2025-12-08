@@ -44,7 +44,7 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
             TimesPointingAtZero++;
     }
 
-    public override void PrintResult()
+    public override void LogState(bool isInitial)
     {
         Log.Information("Puzzle with {Count} instructions. Current position = {CurrentPosition}, Passing = {Passing}, Pointing = {Pointing}",
             Instructions.Count, CurrentPosition, TimesPointingAtZero, TimesPointingAtZeroAfterInstruction);

@@ -5,10 +5,10 @@ namespace AdventOfCode2025.Day04;
 
 public class Puzzle : Puzzle<Puzzle, Grid>
 {
-    protected override IEnumerable<string> Split(string input) => [input];
+    protected override IEnumerable<string> Split(string input, bool _) => [input];
     protected Grid? Input { get; set; }
 
-    public override void PrintResult()
+    public override void LogState(bool isInitial)
     {
         if (Input == null)
             return;

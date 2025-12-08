@@ -9,7 +9,7 @@ public class Puzzle : Puzzle<Puzzle, BatteryBank>
 
     public long GetTotalJoltage(int batteryCount) => BatteryBanks.Sum(b => b.GetMaxJoltage(batteryCount));
 
-    public override void PrintResult()
+    public override void LogState(bool isInitial)
     {
         Log.Information("Total output joltage from two batteries: {TotalJoltage}", GetTotalJoltage(2));
         Log.Information("Total output joltage from twelve batteries: {TotalJoltage}", GetTotalJoltage(12));

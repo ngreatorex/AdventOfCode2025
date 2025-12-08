@@ -2,9 +2,11 @@
 
 namespace AdventOfCode2025.Shared;
 
-public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction> where TInstruction : IParsable<TInstruction>, new()
+public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
+    where TInstruction : IParsable<TInstruction>
     where TSelf : Puzzle<TSelf, TInstruction>, new()
 {
+
     public List<TInstruction> Instructions { get; init; } = [];
 
     public virtual void Run()
@@ -15,13 +17,13 @@ public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
         }
     }
 
-    public abstract void PrintResult();
+    public abstract void LogState(bool isInitial);
 
-    protected virtual IEnumerable<string> Split(string input) => input.Split('\n');
+    protected virtual IEnumerable<string> Split(string input, bool isPartTwo) => input.Split('\n');
 
     protected abstract void ProcessInstruction(TInstruction instruction);
 
-    public static async Task<TSelf> LoadAsync<TInput>(string fileName)
+    public static async Task<TSelf> LoadAsync<TInput>(string fileName, bool isPartTwo)
     {
         using var streamReader = new StreamReader(fileName);
         var result = new TSelf();
@@ -30,7 +32,7 @@ public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
         var inputString = await streamReader.ReadToEndAsync();
 
         result.Instructions.AddRange(
-            result.Split(inputString)
+            result.Split(inputString, isPartTwo)
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Select(s => s.Trim('\r'))
                 .Select(s => TInstruction.Parse(s, null))
