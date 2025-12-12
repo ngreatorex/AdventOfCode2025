@@ -50,7 +50,7 @@ public class Puzzle : Puzzle<Puzzle, Instruction>
         Log.Information("{Count} IDs represent fresh ingredients", total);
     }
 
-    protected override void ProcessInstruction(Instruction instruction)
+    protected override Task ProcessInstruction(Instruction instruction)
     {
         switch (instruction.Type)
         {
@@ -71,5 +71,6 @@ public class Puzzle : Puzzle<Puzzle, Instruction>
                 break;
         }
 
+        return Task.CompletedTask;
     }
 }

@@ -17,7 +17,7 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
         Log.Information("Sum of invalid IDs by rule 2: {Sum}", RuleTwoInvalidIDs.Sum());
     }
 
-    protected override void ProcessInstruction(PuzzleInstruction instruction)
+    protected override Task ProcessInstruction(PuzzleInstruction instruction)
     {
         for (long id = instruction.StartID; id <= instruction.EndID; id++)
         {
@@ -55,6 +55,8 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
             }
 
         }
+
+        return Task.CompletedTask;
     }
 
     protected override IEnumerable<string> Split(string input, bool _) => input.Split(',');

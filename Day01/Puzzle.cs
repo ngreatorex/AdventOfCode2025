@@ -12,7 +12,7 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
     public long TimesPointingAtZero { get; private set; } = 0;
 
 
-    protected override void ProcessInstruction(PuzzleInstruction instruction)
+    protected override Task ProcessInstruction(PuzzleInstruction instruction)
     {
         var startingPosition = CurrentPosition;
 
@@ -26,6 +26,8 @@ public class Puzzle : Puzzle<Puzzle, PuzzleInstruction>
 
         Log.Debug("Processed move {Direction} {Turns}. Position: {startingPosition} -> {CurrentPosition}. Passing = {TimesPointingAtZero}, Pointing = {TimesPointingAtZeroAfterInstruction}",
             instruction.Direction, instruction.Turns, startingPosition, CurrentPosition, TimesPointingAtZero, TimesPointingAtZeroAfterInstruction);
+
+        return Task.CompletedTask;
     }
 
     private void SingleMove(TurnDirection direction)

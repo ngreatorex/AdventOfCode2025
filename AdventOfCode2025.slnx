@@ -11,5 +11,13 @@
   <Project Path="Day06/Day06.csproj" Id="1c282c7d-3c1f-4ff5-94f6-6d063ef188fc" />
   <Project Path="Day07/Day07.csproj" Id="8eff645b-6e07-4e60-8218-33d6fc2e869e" />
   <Project Path="Day08/Day08.csproj" Id="b6bd1b59-7023-4fbe-a998-ab0ab53ccc29" />
+  <Project Path="Day09/Day09.csproj" Id="5a6bfeb3-a8f2-4105-90c1-eb8f3d137d63" />
+  <Project Path="Day10/Day10.csproj" Id="931da832-91fb-4d69-bd17-08962ba5bc6b">
+    <Platform Solution="Debug|*" Project="x64" />
+  </Project>
+  <Project Path="Day11/Day11.csproj" Id="1b60f7b5-a650-4ce2-bc10-238b133b33d7" />
+  <Project Path="Day12/Day12.csproj" Id="c441d2c6-1843-4e07-989e-6f83a76735a1">
+    <Platform Solution="Debug|*" Project="x64" />
+  </Project>
   <Project Path="Shared/Shared.csproj" />
 </Solution>

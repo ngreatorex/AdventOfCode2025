@@ -30,8 +30,10 @@ public class Puzzle : Puzzle<Puzzle, Grid>
         Log.Information("Removed {Total} rolls in total", totalRemoved);
     }
 
-    protected override void ProcessInstruction(Grid instruction)
+    protected override Task ProcessInstruction(Grid instruction)
     {
         Input = instruction;
+
+        return Task.CompletedTask;
     }
 }

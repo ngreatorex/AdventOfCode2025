@@ -15,8 +15,10 @@ public class Puzzle : Puzzle<Puzzle, BatteryBank>
         Log.Information("Total output joltage from twelve batteries: {TotalJoltage}", GetTotalJoltage(12));
     }
 
-    protected override void ProcessInstruction(BatteryBank instruction)
+    protected override Task ProcessInstruction(BatteryBank instruction)
     {
         BatteryBanks.Add(instruction);
+
+        return Task.CompletedTask;
     }
 }

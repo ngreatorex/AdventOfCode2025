@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Serilog.Context;
+using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace AdventOfCode2025.Shared;
@@ -10,6 +11,8 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
     where TInstruction : IParsable<TInstruction>
 {
     protected virtual bool PartTwoRequiresRerun { get; } = false;
+    protected LogEventLevel MinimumLogLevel { get; set; } = LogEventLevel.Information;
+    protected string LogOutputTemplate { get; set; } = "[{Timestamp:HH:mm:ss} {Level:u3}] [{InputFile}] {Message:lj}{NewLine}{Exception}";
 
     protected virtual async Task Run()
     {
@@ -21,13 +24,12 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
         }
     }
 
-    protected virtual void ConfigureLogger()
+    protected virtual void ConfigureLogger(params Action<LoggerConfiguration>[] actions)
     {
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{InputFile}] {Message:lj}{NewLine}{Exception}",
-                theme: AnsiConsoleTheme.Literate)
-            .MinimumLevel.Debug()
+            .WriteTo.Console(outputTemplate: LogOutputTemplate, theme: AnsiConsoleTheme.Literate)
             .Enrich.FromLogContext()
+            .MinimumLevel.Is(MinimumLogLevel)
             .CreateLogger();
     }
 
@@ -38,18 +40,16 @@ public abstract class Program<TSelf, TPuzzle, TInstruction>
         using var l = LogContext.PushProperty("InputFile", Path.GetFileName(filename));
         var puzzleInput = await TPuzzle.LoadAsync<TPuzzle>(filename, false);
 
-        puzzleInput.LogState(true);
         Log.Information("Processing file {FileName}", filename);
-        puzzleInput.Run();
+        await puzzleInput.Run();
         puzzleInput.LogState(false);
 
         if (PartTwoRequiresRerun)
         {
             var partTwoInput = await TPuzzle.LoadAsync<TPuzzle>(filename, true);
 
-            partTwoInput.LogState(true);
             Log.Information("Processing file {FileName} for part two", filename);
-            partTwoInput.Run();
+            await partTwoInput.Run();
             partTwoInput.LogState(false);
         }
     }

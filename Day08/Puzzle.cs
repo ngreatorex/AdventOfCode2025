@@ -1,7 +1,6 @@
 ﻿using AdventOfCode2025.Shared;
 using Serilog;
 using System.Collections.Concurrent;
-using System.Data;
 using System.Diagnostics;
 
 namespace AdventOfCode2025.Day08;
@@ -18,7 +17,7 @@ public class Puzzle : Puzzle<Puzzle, JunctionBox>
 
     private void PreCalculateEuclideanDistances()
     {
-        var pairs = GetPairs(JunctionBoxes).ToList();
+        var pairs = JunctionBoxes.GetOrderedPairs().ToList();
         foreach (var pair in pairs)
         {
             SortedEuclideanDistances.Add(EuclideanDistance(pair.a, pair.b), pair);
@@ -30,14 +29,16 @@ public class Puzzle : Puzzle<Puzzle, JunctionBox>
         Log.Information("Current state: {Count} junction boxes, {Connections} connections", JunctionBoxes.Count, Connections.Count);
     }
 
-    protected override void ProcessInstruction(JunctionBox instruction)
+    protected override Task ProcessInstruction(JunctionBox instruction)
     {
         JunctionBoxes.Add(instruction);
+
+        return Task.CompletedTask;
     }
 
-    public override void Run()
+    public override async Task Run()
     {
-        base.Run();
+        await base.Run();
 
         PreCalculateEuclideanDistances();
 
@@ -127,6 +128,4 @@ public class Puzzle : Puzzle<Puzzle, JunctionBox>
     }
 
     private static double EuclideanDistance(JunctionBox a, JunctionBox b) => Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Y - a.Y, 2) + Math.Pow(b.Z - a.Z, 2));
-
-    private static IEnumerable<(T a, T b)> GetPairs<T>(IList<T> list) => list.SelectMany((t, i) => list.Where((_, j) => j > i), (t1, t2) => (t1, t2));
 }

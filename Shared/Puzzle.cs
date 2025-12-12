@@ -9,11 +9,11 @@ public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
 
     public List<TInstruction> Instructions { get; init; } = [];
 
-    public virtual void Run()
+    public virtual async Task Run()
     {
         foreach (var instruction in Instructions)
         {
-            ProcessInstruction(instruction);
+            await ProcessInstruction(instruction);
         }
     }
 
@@ -21,7 +21,7 @@ public abstract class Puzzle<TSelf, TInstruction> : IPuzzle<TSelf, TInstruction>
 
     protected virtual IEnumerable<string> Split(string input, bool isPartTwo) => input.Split('\n');
 
-    protected abstract void ProcessInstruction(TInstruction instruction);
+    protected abstract Task ProcessInstruction(TInstruction instruction);
 
     public static async Task<TSelf> LoadAsync<TInput>(string fileName, bool isPartTwo)
     {

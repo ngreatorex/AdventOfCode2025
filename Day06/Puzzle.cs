@@ -80,8 +80,10 @@ public class Puzzle : Puzzle<Puzzle, Problem>
         Log.Information("Sum of all puzzles is {Sum}", AnswerSum);
     }
 
-    protected override void ProcessInstruction(Problem instruction)
+    protected override Task ProcessInstruction(Problem instruction)
     {
         AnswerSum += instruction.Answer;
+
+        return Task.CompletedTask;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AdventOfCode2025.Shared;
+using AdventOfCode2025.Shared.Graphs;
 using Serilog;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -33,14 +34,14 @@ public class Puzzle : Puzzle<Puzzle, Line>
         return sb.ToString();
     }
 
-    public override void Run()
+    public override async Task Run()
     {
-        base.Run();
+        await base.Run();
 
         var graph = TranslateToGraph();
         Log.Debug("Created DAG with {Nodes} nodes and {Edges} edges", graph.Nodes.Count, graph.Edges.Count);
 
-        var splitCount = graph.Nodes.Count(n => n.IsSplitter == true);
+        var splitCount = graph.Nodes.AsEnumerable().Count(n => n.IsSplitter == true);
         Log.Information("Split count = {Splits}", splitCount);
 
         var pathCount = graph.CountPaths(Height);
@@ -122,14 +123,14 @@ public class Puzzle : Puzzle<Puzzle, Line>
             var target = nodeLookup.GetOrAdd(newPosition, new Node { Position = newPosition });
             graph.Nodes.Add(target);
 
-            var edge = new Edge { Source = currentNode, Target = target };
+            var edge = new Edge<Node> { Source = currentNode, Target = target };
             graph.Edges.Add(edge);
 
             stack.Push((newPosition, target));
         }
     }
 
-    protected override void ProcessInstruction(Line instruction)
+    protected override Task ProcessInstruction(Line instruction)
     {
         if (Grid.GetLength(0) == 0)
         {
@@ -146,5 +147,7 @@ public class Puzzle : Puzzle<Puzzle, Line>
 
         for (var i = 0; i < instruction.Cells.Length; i++)
             Grid[Height - 1, i] = instruction.Cells[i];
+
+        return Task.CompletedTask;
     }
 }
